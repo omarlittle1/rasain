@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RASA.IN</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-amber-50 text-neutral-800 dark:bg-neutral-950 dark:text-neutral-100 font-sans antialiased transition-colors duration-300">
+
+    <header class="fixed w-full top-0 z-50 bg-amber-50/80 dark:bg-neutral-950/80 backdrop-blur-md border-b border-amber-100 dark:border-neutral-800 transition-colors">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="text-2xl font-serif font-bold tracking-wide text-amber-900 dark:text-amber-500">RASA.IN<span class="text-amber-600"></span></a>
+            
+            <nav class="hidden md:flex space-x-8 font-medium text-neutral-600 dark:text-neutral-300">
+                <a href="#" class="hover:text-amber-600 dark:hover:text-amber-400 transition">Beranda</a>
+                <a href="#menu-section" class="hover:text-amber-600 dark:hover:text-amber-400 transition">Daftar Resep</a>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <button id="darkModeToggle" class="p-2.5 rounded-xl bg-amber-100 dark:bg-neutral-800 text-amber-900 dark:text-amber-400 hover:scale-105 transition" title="Ubah Tema">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block"></i>
+                </button>
+                
+                <button onclick="openAddRecipeModal()" class="bg-amber-700 hover:bg-amber-800 dark:bg-amber-600 dark:hover:bg-amber-500 text-white px-5 py-2.5 rounded-xl font-medium transition shadow-md flex items-center gap-2">
+                    <i class="fas fa-plus text-sm"></i> Tambah Resep
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="relative w-full h-[60vh] md:h-[90vh] flex items-center justify-center overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=1600" 
+             alt="Background Masakan" 
+             class="absolute inset-0 w-full h-full object-cover">
+        
+        <div class="absolute inset-0 bg-black/50"></div>
+
+        <div class="relative z-10 text-center px-6 max-w-3xl space-y-4">
+            <h1 class="text-4xl md:text-6xl font-serif font-bold text-white leading-tight">
+                SEMUA BISA MASAK ENAK
+            </h1>
+            <p class="text-lg md:text-xl text-neutral-200">
+                Temukan ribuan resep lezat di sini
+            </p>
+            
+            <div class="mt-8">
+                <input type="text" 
+                       id="searchInput"
+                       placeholder="Cari resep (contoh: Rendang, Ayam Goreng)..." 
+                       class="w-full max-w-lg px-6 py-4 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-neutral-800">
+            </div>
+        </div>
+    </section>
+
+    <section id="menu-section" class="py-20 bg-white dark:bg-neutral-900 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-neutral-900 dark:text-white">Eksplorasi & Kelola Resep</h2>
+                <p class="text-neutral-500 dark:text-neutral-400">Cari resep buatanmu atau milik chef lainnya secara real-time.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 pb-6 border-b border-neutral-100 dark:border-neutral-800">
+                <div class="flex flex-wrap gap-2" id="filterContainer">
+                    <button class="filter-btn active bg-amber-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition" data-category="all">Semua</button>
+                    <button class="filter-btn bg-neutral-100 dark:bg-neutral-800 px-5 py-2 rounded-lg text-sm font-medium text-neutral-600 dark:text-neutral-300" data-category="berat">Makanan Utama</button>
+                    <button class="filter-btn bg-neutral-100 dark:bg-neutral-800 px-5 py-2 rounded-lg text-sm font-medium text-neutral-600 dark:text-neutral-300" data-category="sehat">Makanan Ringan</button>
+                    <button class="filter-btn bg-neutral-100 dark:bg-neutral-800 px-5 py-2 rounded-lg text-sm font-medium text-neutral-600 dark:text-neutral-300" data-category="manis">Minuman</button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8" id="menuGrid">
+                <div class="menu-card bg-amber-50 dark:bg-neutral-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition duration-300" data-name="truffle artisan pizza" data-category="berat">
+                    <div class="relative overflow-hidden aspect-video">
+                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=500" alt="Pizza" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-xl font-bold dark:text-white card-title">Truffle Artisan Pizza</h3>
+                            <button onclick="deleteRecipe(this)" class="text-red-500 hover:text-red-700 p-1.5 rounded-lg bg-red-50 dark:bg-red-950/30 transition text-xs" title="Hapus Resep">
+                                <i class="fas fa-trash-alt"></i> Hapus
+                            </button>
+                        </div>
+                        <p class="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2 card-desc">Adonan sourdough klasik dengan toping jamur truffle hitam melimpah.</p>
+                        <div class="pt-3 border-t border-neutral-200 dark:border-neutral-700 flex justify-end">
+                            <button onclick="openModal('Truffle Artisan Pizza', 'Adonan pizza tipis dengan minyak truffle asli alba Italia, keju mozzarella fior di latte, dan jamur portobello segar.', 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=500')" 
+                                    class="text-amber-700 dark:text-amber-400 font-semibold text-sm hover:underline">Lihat Detail</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="noMatchMessage" class="hidden text-center py-12 text-neutral-500 dark:text-neutral-400">
+                <i class="fas fa-hamburger text-3xl mb-3 block"></i> Belum ada resep yang cocok.
+            </div>
+        </div>
+    </section>
+
+    <div id="addRecipeModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white dark:bg-neutral-800 rounded-3xl max-w-md w-full p-6 shadow-2xl transform scale-95 transition-transform duration-300 space-y-4 modal-box">
+            <div class="flex justify-between items-center border-b border-neutral-100 dark:border-neutral-700 pb-3">
+                <h3 class="text-xl font-serif font-bold text-neutral-900 dark:text-white">Tambah Resep Baru</h3>
+                <button type="button" onclick="closeAddRecipeModal()" class="text-neutral-400 hover:text-neutral-600 dark:hover:text-white"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <form id="recipeForm" class="space-y-3 text-sm" onsubmit="saveRecipe(event)">
+                <div>
+                    <label class="block font-medium mb-1 dark:text-neutral-300">Nama Masakan</label>
+                    <input type="text" id="formTitle" required class="w-full p-2.5 bg-neutral-50 dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600 rounded-xl dark:text-white focus:outline-amber-500">
+                </div>
+                
+                <div>
+                    <label class="block font-medium mb-1 dark:text-neutral-300">Kategori</label>
+                    <select id="formCategory" class="w-full p-2.5 bg-neutral-50 dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600 rounded-xl dark:text-white focus:outline-amber-500">
+                        <option value="berat">Makanan Utama</option>
+                        <option value="sehat">Makanan Ringan</option>
+                        <option value="manis">Minuman</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-medium mb-1 dark:text-neutral-300">Deskripsi Singkat</label>
+                    <input type="text" id="formDesc" required placeholder="Ceritakan sedikit tentang masakan ini..." class="w-full p-2.5 bg-neutral-50 dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600 rounded-xl dark:text-white focus:outline-amber-500">
+                </div>
+
+                <div>
+                    <label class="block font-medium mb-1 dark:text-neutral-300">Bahan-bahan</label>
+                    <textarea id="formIngredients" rows="3" required placeholder="Tuliskan daftar bahan di sini..." class="w-full p-2.5 bg-neutral-50 dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600 rounded-xl dark:text-white focus:outline-amber-500"></textarea>
+                </div>
+
+                <div>
+                    <label class="block font-medium mb-1 dark:text-neutral-300">Langkah Pembuatan</label>
+                    <textarea id="formSteps" rows="4" required placeholder="Tuliskan langkah-langkahnya..." class="w-full p-2.5 bg-neutral-50 dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600 rounded-xl dark:text-white focus:outline-amber-500"></textarea>
+                </div>
+
+                <div>
+                    <label class="block font-medium mb-1 dark:text-neutral-300">Foto Masakan (Wajib)</label>
+                    <input type="file" id="formImage" accept="image/*" required class="w-full p-2 bg-neutral-50 dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600 rounded-xl dark:text-white file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-amber-100 file:text-amber-900 hover:file:bg-amber-200">
+                </div>
+
+                <div class="pt-3 flex justify-end gap-2">
+                    <button type="button" onclick="closeAddRecipeModal()" class="px-4 py-2 bg-neutral-100 dark:bg-neutral-700 rounded-xl text-neutral-600 dark:text-white">Batal</button>
+                    <button type="submit" class="px-5 py-2 bg-amber-700 text-white rounded-xl font-medium">Simpan Resep</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="recipeModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white dark:bg-neutral-800 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl transform scale-95 transition-transform duration-300 modal-box">
+            <div class="relative h-48 bg-amber-900 flex items-center justify-center text-white p-6 text-center">
+                <img id="modalImage" src="" alt="Menu" class="absolute inset-0 w-full h-full object-cover opacity-40">
+                <h3 id="modalTitle" class="text-3xl font-serif font-bold relative z-10">Nama Menu</h3>
+                <button onclick="closeModal()" class="absolute top-4 right-4 bg-black/50 text-white w-9 h-9 rounded-full flex items-center justify-center hover:bg-black/80 transition z-20">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4">
+                <p id="modalDescription" class="text-neutral-600 dark:text-neutral-400 text-sm leading-relaxed whitespace-pre-line">Deskripsi resep...</p>
+                <div class="pt-4 border-t border-neutral-100 dark:border-neutral-700 flex justify-end">
+                    <button onclick="closeModal()" class="bg-neutral-900 dark:bg-amber-700 text-white px-5 py-2 rounded-xl text-sm font-medium">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-neutral-900 text-neutral-400 py-8 text-center text-sm border-t border-neutral-800">
+        <p>&copy; 2026 Savoria Resto Intelligence. All Rights Reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+/* Custom CSS Savoria Premium */
+/* Tampilan default untuk Mobile / HP (Mobile-First Approach) */
+body {
+  font-size: 14px;
+}
+.container {
+  display: flex;
+  flex-direction: column; /* Menu/konten disusun vertikal ke bawah */
+}
+
+/* Tampilan untuk Tablet (Layar minimal 768px) */
+@media (min-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+/* Tampilan untuk Laptop/Desktop (Layar minimal 1024px) */
+@media (min-width: 1024px) {
+  .container {
+    flex-direction: row; /* Konten berjajar ke samping seperti biasa */
+  }
+}
+
+/* Pengaturan batas tinggi scroll agar halaman tidak bergeser saat pop-up muncul */
+.modal-box {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Kustomisasi scrollbar halus untuk area form/resep panjang */
+.modal-box::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-box::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-box::-webkit-scrollbar-thumb {
+    background-color: rgba(180, 83, 9, 0.3);
+    border-radius: 10px;
+}
+
+/* Transisi tambahan pada scaling kartu menu */
+.menu-card img {
+    transition: transform 0.5s ease-in-out;
+}
+
+.menu-card:hover img {
+    transform: scale(1.06);
+}
